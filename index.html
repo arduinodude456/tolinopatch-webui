@@ -1204,27 +1204,19 @@ function getConfig(){
 ========================================================= */
 
 
-async function downloadKFMon(){
+async function downloadKFMon() {
+    const response = await fetch("./assets/KFMon.zip", {
+        cache: "no-store"
+    });
 
-    const url =
-        "https://archive.org/download/" +
-        "kfmon-fuer-neue-tolino-version-5_18/" +
-        "KFMon-v1.4.6-191-gca31869.zip";
-
-    const response =
-        await fetch(url);
-
-    if(!response.ok){
-
+    if (!response.ok) {
         throw new Error(
-            "KFMon konnte nicht geladen werden. HTTP " +
+            "KFMon.zip konnte nicht geladen werden. HTTP " +
             response.status
         );
-
     }
 
-    const data =
-        await response.arrayBuffer();
+    const data = await response.arrayBuffer();
 
     return await JSZip.loadAsync(data);
 }
