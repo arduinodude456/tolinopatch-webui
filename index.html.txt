@@ -1,0 +1,1633 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TBS · Tolino V5 WebUI</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#0d1117;
+    color:#f0f3f6;
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+header{
+    background:#161b22;
+    border-bottom:1px solid #30363d;
+    padding:24px 16px;
+    text-align:center;
+}
+
+header h1{
+    margin:0 0 8px;
+}
+
+header p{
+    margin:0;
+    color:#8b949e;
+}
+
+header a{
+    color:#58a6ff;
+    text-decoration:none;
+}
+
+nav{
+    max-width:850px;
+    margin:18px auto 0;
+    padding:0 16px;
+    display:flex;
+    gap:8px;
+}
+
+nav button{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #30363d;
+    background:#161b22;
+    color:#c9d1d9;
+    cursor:pointer;
+    font-size:15px;
+}
+
+nav button.active{
+    background:#238636;
+    border-color:#238636;
+    color:white;
+}
+
+.page{
+    display:none;
+    max-width:850px;
+    margin:auto;
+    padding:20px 16px 50px;
+}
+
+.page.active{
+    display:block;
+}
+
+.card{
+    background:#161b22;
+    border:1px solid #30363d;
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:16px;
+}
+
+.card h2{
+    margin-top:0;
+}
+
+.option{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding:15px 0;
+    border-bottom:1px solid #21262d;
+}
+
+.option:last-child{
+    border-bottom:0;
+}
+
+.option-title{
+    font-weight:700;
+    font-size:16px;
+}
+
+.option-description{
+    color:#8b949e;
+    font-size:13px;
+    margin-top:4px;
+}
+
+input[type="checkbox"]{
+    width:21px;
+    height:21px;
+}
+
+input[type="number"],
+input[type="text"],
+select{
+    background:#0d1117;
+    border:1px solid #30363d;
+    color:white;
+    border-radius:8px;
+    padding:9px;
+}
+
+input[type="number"]{
+    width:100px;
+}
+
+input[type="text"]{
+    width:220px;
+    max-width:100%;
+}
+
+select{
+    width:150px;
+}
+
+.search{
+    width:100%;
+    padding:12px;
+    background:#0d1117;
+    color:white;
+    border:1px solid #30363d;
+    border-radius:9px;
+    margin-bottom:15px;
+}
+
+button.start{
+    width:100%;
+    padding:17px;
+    border:0;
+    border-radius:12px;
+    background:#238636;
+    color:white;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+button.start:hover{
+    background:#2ea043;
+}
+
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+#status{
+    margin-top:14px;
+    padding:14px;
+    border-radius:10px;
+    background:#161b22;
+    color:#8b949e;
+    white-space:pre-wrap;
+}
+
+.success{
+    color:#3fb950!important;
+}
+
+.error{
+    color:#f85149!important;
+}
+
+.warning{
+    color:#d29922;
+    font-size:13px;
+}
+
+.tree{
+    background:#0d1117;
+    border-radius:9px;
+    padding:15px;
+    font-family:monospace;
+    line-height:1.7;
+}
+
+.section-title{
+    color:#58a6ff;
+    margin-top:20px;
+}
+
+code{
+    background:#0d1117;
+    padding:2px 5px;
+    border-radius:4px;
+}
+</style>
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>Tolino V5 WebUI</h1>
+
+<p>
+Dies ist ein Service von TBS.
+Besuche TBS hier:
+<a
+href="https://arduinodude456.github.io/tbs"
+target="_blank"
+rel="noopener"
+>
+arduinodude456.github.io/tbs
+</a>
+</p>
+
+</header>
+
+
+<nav>
+
+<button
+class="tab active"
+data-page="basic"
+>
+Basis
+</button>
+
+<button
+class="tab"
+data-page="advanced"
+>
+Advanced
+</button>
+
+</nav>
+
+
+
+<!-- =====================================================
+     BASIS
+===================================================== -->
+
+<div
+class="page active"
+id="basic"
+>
+
+<div class="card">
+
+<h2>Features</h2>
+
+
+<div class="option">
+
+<div>
+
+<div class="option-title">
+KFMon
+</div>
+
+<div class="option-description">
+KFMon für Tolino V5.x installieren
+</div>
+
+</div>
+
+<input
+type="checkbox"
+id="kfmon"
+checked
+>
+
+</div>
+
+
+
+<div class="option">
+
+<div>
+
+<div class="option-title">
+KOReader
+</div>
+
+<div class="option-description">
+Automatisch den KOReader aus
+<code>koreader/</code> verwenden
+</div>
+
+</div>
+
+<input
+type="checkbox"
+id="koreader"
+>
+
+</div>
+
+
+<div
+id="koreaderStatus"
+style="
+display:none;
+padding:12px 0;
+color:#8b949e;
+"
+>
+KOReader wird automatisch aus
+<code>koreader/</code>
+geladen.
+</div>
+
+
+
+<div class="option">
+
+<div>
+
+<div class="option-title">
+KOReader Startbild
+</div>
+
+<div class="option-description">
+Die im KFMon-Paket enthaltene
+<code>koreader.png</code>
+wird automatisch übernommen.
+</div>
+
+</div>
+
+<input
+type="checkbox"
+id="koreaderImage"
+checked
+>
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>ZIP-Struktur</h2>
+
+<div
+class="tree"
+id="tree"
+>
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     ADVANCED
+===================================================== -->
+
+<div
+class="page"
+id="advanced"
+>
+
+<div class="card">
+
+<h2>
+Advanced · Kobo eReader.conf
+</h2>
+
+<p>
+Optionen für
+<code>.kobo/Kobo/Kobo eReader.conf</code>.
+</p>
+
+<input
+class="search"
+id="search"
+placeholder="Einstellung suchen..."
+>
+
+</div>
+
+
+
+<!-- FeatureSettings -->
+
+<div class="card settings-section">
+
+<h2 class="section-title">
+[FeatureSettings]
+</h2>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+BookSpecificStats
+</div>
+
+<div class="option-description">
+Lesestatistik im Buch-Kontextmenü.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="FeatureSettings"
+data-key="BookSpecificStats"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+ExportHighlights
+</div>
+
+<div class="option-description">
+Export von Anmerkungen ermöglichen.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="FeatureSettings"
+data-key="ExportHighlights"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+Screenshots
+</div>
+
+<div class="option-description">
+Screenshot-Funktion aktivieren.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="FeatureSettings"
+data-key="Screenshots"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+FullScreenBrowser
+</div>
+
+<div class="option-description">
+Browser im Vollbildmodus.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="FeatureSettings"
+data-key="FullScreenBrowser"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+InvertScreen
+</div>
+
+<div class="option-description">
+Bildschirmdarstellung invertieren.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="FeatureSettings"
+data-key="InvertScreen"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+MyWords
+</div>
+
+<div class="option-description">
+MyWords aktivieren.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="FeatureSettings"
+data-key="MyWords"
+>
+
+</div>
+
+</div>
+
+
+
+<!-- ApplicationPreferences -->
+
+<div class="card settings-section">
+
+<h2 class="section-title">
+[ApplicationPreferences]
+</h2>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+SideloadedMode
+</div>
+
+<div class="option-description">
+Sideloaded-Modus aktivieren.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="ApplicationPreferences"
+data-key="SideloadedMode"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+AIRPLANE_MODE
+</div>
+
+<div class="option-description">
+Flugmodus aktivieren.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="ApplicationPreferences"
+data-key="AIRPLANE_MODE"
+>
+
+</div>
+
+</div>
+
+
+
+<!-- DeveloperSettings -->
+
+<div class="card settings-section">
+
+<h2 class="section-title">
+[DeveloperSettings]
+</h2>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+AutoUsbGadget
+</div>
+
+<div class="option-description">
+USB-Gadget automatisch aktivieren.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="DeveloperSettings"
+data-key="AutoUsbGadget"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+ForceAllowLandscape
+</div>
+
+<div class="option-description">
+Landscape-Modus erlauben.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="DeveloperSettings"
+data-key="ForceAllowLandscape"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+ForceWifiOn
+</div>
+
+<div class="option-description">
+WLAN eingeschaltet halten.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="DeveloperSettings"
+data-key="ForceWifiOn"
+>
+
+</div>
+
+</div>
+
+
+
+<!-- Reading -->
+
+<div class="card settings-section">
+
+<h2 class="section-title">
+[Reading]
+</h2>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+swipeBrightness
+</div>
+
+<div class="option-description">
+Helligkeit per Wischgeste.
+</div>
+</div>
+
+<select
+data-section="Reading"
+data-key="swipeBrightness"
+>
+
+<option value="">
+Standard
+</option>
+
+<option value="true">
+Ein
+</option>
+
+<option value="false">
+Aus
+</option>
+
+</select>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+numPartialUpdatePageTurns
+</div>
+
+<div class="option-description">
+Anzahl der Teilaktualisierungen.
+</div>
+</div>
+
+<input
+type="number"
+data-section="Reading"
+data-key="numPartialUpdatePageTurns"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+readingFontFamily
+</div>
+
+<div class="option-description">
+Leseschrift.
+</div>
+</div>
+
+<input
+type="text"
+data-section="Reading"
+data-key="readingFontFamily"
+placeholder="z.B. Georgia"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+readingFontSize
+</div>
+
+<div class="option-description">
+Leseschriftgröße.
+</div>
+</div>
+
+<input
+type="number"
+data-section="Reading"
+data-key="readingFontSize"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+readingLineHeight
+</div>
+
+<div class="option-description">
+Zeilenhöhe.
+</div>
+</div>
+
+<input
+type="number"
+data-section="Reading"
+data-key="readingLineHeight"
+>
+
+</div>
+
+</div>
+
+
+
+<!-- PowerOptions -->
+
+<div class="card settings-section">
+
+<h2 class="section-title">
+[PowerOptions]
+</h2>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+UnlockEnabled
+</div>
+
+<div class="option-description">
+Swipe-to-Unlock.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="PowerOptions"
+data-key="UnlockEnabled"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+FrontLightState
+</div>
+
+<div class="option-description">
+Frontlight beim Start aktivieren.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="PowerOptions"
+data-key="FrontLightState"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+FrontLightLevel
+</div>
+
+<div class="option-description">
+Frontlight-Level 0–100.
+</div>
+</div>
+
+<input
+type="number"
+min="0"
+max="100"
+data-section="PowerOptions"
+data-key="FrontLightLevel"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+AutoOffMinutes
+</div>
+
+<div class="option-description">
+Automatisches Ausschalten.
+</div>
+</div>
+
+<input
+type="number"
+min="1"
+data-section="PowerOptions"
+data-key="AutoOffMinutes"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+AutoSleepMinutes
+</div>
+
+<div class="option-description">
+Automatischer Sleep.
+</div>
+</div>
+
+<input
+type="number"
+min="1"
+data-section="PowerOptions"
+data-key="AutoSleepMinutes"
+>
+
+</div>
+
+
+<div class="option setting">
+
+<div>
+<div class="option-title">
+ShowBookCover
+</div>
+
+<div class="option-description">
+Buchcover auf dem Sleep-Screen.
+</div>
+</div>
+
+<input
+type="checkbox"
+data-section="PowerOptions"
+data-key="ShowBookCover"
+>
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<p class="warning">
+Die Einstellungen werden nur in die Konfiguration
+geschrieben, wenn sie aktiviert bzw. ausgefüllt wurden.
+Nicht jede Option funktioniert auf jeder Firmware.
+</p>
+
+
+<button
+class="start"
+id="startButton"
+>
+Start · download.zip erstellen
+</button>
+
+
+<div id="status">
+Bereit.
+</div>
+
+</div>
+
+</div>
+
+
+
+<script
+src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"
+></script>
+
+
+
+<script>
+
+/* =========================================================
+   TABS
+========================================================= */
+
+document
+.querySelectorAll(".tab")
+.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        document
+        .querySelectorAll(".tab")
+        .forEach(b =>
+            b.classList.remove("active")
+        );
+
+        document
+        .querySelectorAll(".page")
+        .forEach(p =>
+            p.classList.remove("active")
+        );
+
+        button.classList.add("active");
+
+        document
+        .getElementById(button.dataset.page)
+        .classList.add("active");
+
+    });
+
+});
+
+
+
+/* =========================================================
+   TREE
+========================================================= */
+
+const koreaderCheckbox =
+    document.getElementById("koreader");
+
+const koreaderStatus =
+    document.getElementById("koreaderStatus");
+
+const tree =
+    document.getElementById("tree");
+
+
+function updateTree(){
+
+    let html =
+        ".adds/<br>" +
+        "├── KFMon-Dateien<br>" +
+        ".kobo/<br>" +
+        "└── update.tar<br>" +
+        "koreader.png";
+
+
+    if(koreaderCheckbox.checked){
+
+        html +=
+            "<br><br>" +
+            ".adds/<br>" +
+            "└── koreader/<br>" +
+            "    └── automatisch aus /koreader/";
+
+        koreaderStatus.style.display =
+            "block";
+
+    }
+    else{
+
+        koreaderStatus.style.display =
+            "none";
+
+    }
+
+
+    if(getConfig()){
+
+        html +=
+            "<br><br>" +
+            ".kobo/Kobo/<br>" +
+            "└── Kobo eReader.conf";
+
+    }
+
+
+    tree.innerHTML =
+        html;
+
+}
+
+
+koreaderCheckbox.addEventListener(
+    "change",
+    updateTree
+);
+
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+document
+.getElementById("search")
+.addEventListener("input", function(){
+
+    const value =
+        this.value.toLowerCase();
+
+
+    document
+    .querySelectorAll(".setting")
+    .forEach(setting => {
+
+        setting.style.display =
+            setting.textContent
+            .toLowerCase()
+            .includes(value)
+            ? "flex"
+            : "none";
+
+    });
+
+});
+
+
+
+/* =========================================================
+   CONFIG
+========================================================= */
+
+function getConfig(){
+
+    const sections = {};
+
+
+    document
+    .querySelectorAll(
+        "[data-section][data-key]"
+    )
+    .forEach(input => {
+
+        let value;
+
+
+        if(input.type === "checkbox"){
+
+            if(!input.checked)
+                return;
+
+            value = "true";
+
+        }
+
+        else if(input.tagName === "SELECT"){
+
+            if(input.value === "")
+                return;
+
+            value =
+                input.value;
+
+        }
+
+        else{
+
+            if(!input.value.trim())
+                return;
+
+            value =
+                input.value.trim();
+
+        }
+
+
+        const section =
+            input.dataset.section;
+
+        const key =
+            input.dataset.key;
+
+
+        if(!sections[section])
+            sections[section] = [];
+
+
+        sections[section].push(
+            key + "=" + value
+        );
+
+    });
+
+
+    let result = "";
+
+
+    for(const section in sections){
+
+        result +=
+            "[" + section + "]\n";
+
+        result +=
+            sections[section].join("\n");
+
+        result +=
+            "\n\n";
+
+    }
+
+
+    return result.trim();
+
+}
+
+
+
+/* =========================================================
+   KFMON
+========================================================= */
+
+async function downloadKFMon(){
+
+    const urls = [
+
+        "https://archive.org/download/kfmon-fuer-neue-tolino-version-5_18/kfmon-fuer-neue-tolino-version-5_18.zip",
+
+        "https://archive.org/download/kfmon-fuer-neue-tolino-version-5_18/kfmon-fuer-neue-tolino-version-5_18_archive.zip"
+
+    ];
+
+
+    let lastError;
+
+
+    for(const url of urls){
+
+        try{
+
+            const response =
+                await fetch(url);
+
+
+            if(!response.ok)
+                throw new Error(
+                    "HTTP " +
+                    response.status
+                );
+
+
+            const data =
+                await response.arrayBuffer();
+
+
+            return await JSZip.loadAsync(
+                data
+            );
+
+        }
+
+        catch(error){
+
+            lastError =
+                error;
+
+        }
+
+    }
+
+
+    throw new Error(
+        "KFMon konnte nicht geladen werden.\n" +
+        (lastError?.message || "")
+    );
+
+}
+
+
+
+/* =========================================================
+   KOReader MANIFEST
+========================================================= */
+
+/*
+    koreader/manifest.json:
+
+    [
+        "koreader.sh",
+        "reader.lua",
+        "frontend/...",
+        ...
+    ]
+
+    Die Pfade sind relativ zu /koreader/.
+*/
+
+async function loadKOReaderManifest(){
+
+    const response =
+        await fetch(
+            "./koreader/manifest.json",
+            {
+                cache:"no-store"
+            }
+        );
+
+
+    if(!response.ok){
+
+        throw new Error(
+            "koreader/manifest.json konnte nicht geladen werden."
+        );
+
+    }
+
+
+    const manifest =
+        await response.json();
+
+
+    if(!Array.isArray(manifest)){
+
+        throw new Error(
+            "koreader/manifest.json muss ein Array enthalten."
+        );
+
+    }
+
+
+    return manifest;
+
+}
+
+
+
+/* =========================================================
+   KOReader DATEIEN
+========================================================= */
+
+async function addKOReader(zip){
+
+    const manifest =
+        await loadKOReaderManifest();
+
+
+    let count = 0;
+
+
+    for(const relativePath of manifest){
+
+        if(
+            typeof relativePath !== "string" ||
+            relativePath.length === 0
+        ){
+            continue;
+        }
+
+
+        const url =
+            "./koreader/" +
+            relativePath
+            .split("/")
+            .map(
+                part =>
+                    encodeURIComponent(part)
+            )
+            .join("/");
+
+
+        const response =
+            await fetch(url);
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "KOReader-Datei konnte nicht geladen werden:\n" +
+                relativePath
+            );
+
+        }
+
+
+        zip
+        .folder(".adds")
+        .folder("koreader")
+        .file(
+            relativePath,
+            await response.arrayBuffer()
+        );
+
+
+        count++;
+
+    }
+
+
+    return count;
+
+}
+
+
+
+/* =========================================================
+   START
+========================================================= */
+
+document
+.getElementById("startButton")
+.addEventListener(
+"click",
+async function(){
+
+    const button =
+        this;
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    button.disabled =
+        true;
+
+
+    status.className = "";
+
+    status.textContent =
+        "Paket wird vorbereitet...";
+
+
+    try{
+
+        const zip =
+            new JSZip();
+
+
+        /*
+         * KFMon
+         */
+
+        if(
+            document
+            .getElementById("kfmon")
+            .checked
+        ){
+
+            status.textContent =
+                "KFMon wird von Archive.org geladen...";
+
+
+            const source =
+                await downloadKFMon();
+
+
+            let count = 0;
+
+
+            for(
+                const file
+                of Object.values(source.files)
+            ){
+
+                if(file.dir)
+                    continue;
+
+
+                const filename =
+                    file.name.replace(
+                        /^\.?\//,
+                        ""
+                    );
+
+
+                zip.file(
+                    filename,
+                    await file.async(
+                        "uint8array"
+                    )
+                );
+
+
+                count++;
+
+            }
+
+
+            status.textContent =
+                "KFMon übernommen (" +
+                count +
+                " Dateien).";
+
+        }
+
+
+
+        /*
+         * KOReader
+         */
+
+        if(
+            koreaderCheckbox.checked
+        ){
+
+            status.textContent =
+                "KOReader aus /koreader/ wird hinzugefügt...";
+
+
+            const count =
+                await addKOReader(zip);
+
+
+            status.textContent =
+                "KOReader übernommen (" +
+                count +
+                " Dateien).";
+
+        }
+
+
+
+        /*
+         * Kobo eReader.conf
+         */
+
+        const config =
+            getConfig();
+
+
+        if(config){
+
+            status.textContent =
+                "Kobo eReader.conf wird erstellt...";
+
+
+            zip
+            .folder(".kobo")
+            .folder("Kobo")
+            .file(
+                "Kobo eReader.conf",
+                config + "\n"
+            );
+
+        }
+
+
+
+        /*
+         * ZIP
+         */
+
+        status.textContent =
+            "download.zip wird erstellt...";
+
+
+        const blob =
+            await zip.generateAsync({
+
+                type:"blob",
+
+                compression:"DEFLATE",
+
+                compressionOptions:{
+                    level:6
+                }
+
+            });
+
+
+        /*
+         * Download
+         */
+
+        const url =
+            URL.createObjectURL(
+                blob
+            );
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.href =
+            url;
+
+        link.download =
+            "download.zip";
+
+
+        document.body.appendChild(
+            link
+        );
+
+        link.click();
+
+        link.remove();
+
+
+        setTimeout(
+            () =>
+                URL.revokeObjectURL(url),
+            5000
+        );
+
+
+        status.className =
+            "success";
+
+
+        status.textContent =
+            "Fertig!\n\n" +
+            "download.zip wurde erstellt.";
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+
+        status.className =
+            "error";
+
+
+        status.textContent =
+            "Fehler:\n" +
+            error.message;
+
+    }
+
+    finally{
+
+        button.disabled =
+            false;
+
+    }
+
+});
+
+
+
+updateTree();
+
+</script>
+
+</body>
+</html>
